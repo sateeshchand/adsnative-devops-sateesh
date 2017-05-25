@@ -1,0 +1,11 @@
+- hosts: all
+  become: yes
+  become_method: sudo
+  vars:
+    webapp: /webapps/adsnative
+    git_repo: git@github.com:picatcha/adsnative_devops_challenge.git
+    log_dir: /var/log/adsnative
+
+  roles:
+     - app
+

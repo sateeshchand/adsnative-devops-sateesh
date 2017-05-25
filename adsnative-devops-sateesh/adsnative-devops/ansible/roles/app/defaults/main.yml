@@ -1,0 +1,8 @@
+---
+
+app:
+  owner: adsnative
+  webapp_dir: /webapps
+  install_dir: /webapps/adsnative
+  conf_dir: /etc/adsnative
+

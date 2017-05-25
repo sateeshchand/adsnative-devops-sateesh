@@ -1,0 +1,7 @@
+---
+
+- name: reload supervisor config
+  command: supervisorctl reload && supervisorctl update
+
+- name: start supervisor service
+  shell: supervisord -c /etc/supervisord.conf -u adsnative

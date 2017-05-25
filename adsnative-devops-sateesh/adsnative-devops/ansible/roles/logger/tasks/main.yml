@@ -1,0 +1,38 @@
+---
+
+
+- name: Create log directory
+  file:
+    path: "{{ log_dir }}"
+    state: directory
+    owner: adsnative
+    group: adsnative
+
+
+- name: Copy logrotate task to cron.hourly
+  copy:
+    src: files/app_logrotate.sh
+    dest: /etc/cron.hourly/logrotate
+    owner: root
+    group: root
+    mode: 0755
+    force: True
+
+- name: Add config file for logrotate
+  copy:
+    src: files/log_config
+    dest: /etc/logrotate.d/adsnative
+    owner: adsnative
+    group: adsnative
+    mode: 0644
+
+- name: Copies the timezone details to /etc/timezone
+  copy:
+    content: 'America/New_York'
+    dest: /etc/timezone
+    owner: root
+    owner: root
+    mode: 0644
+    backup: yes
+  notify: Update Timezone
+

@@ -1,0 +1,7 @@
+---
+
+dependencies:
+  - { role: users }
+  - { role: app-libraries }
+  - { role: supervisor }
+  - { role: logger }

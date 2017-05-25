@@ -1,0 +1,33 @@
+---
+
+- name: install supervisor
+  pip:
+    name: supervisor
+    state: present
+  become: yes
+
+- name: Copy supervisord configuration file
+  copy:
+    src: files/supervisord.conf
+    dest: /etc/supervisord.conf
+    follow: yes
+    owner: adsnative
+    group: adsnative
+  become: yes
+
+- name: Create log directory
+  file:
+    path: /var/log/supervisord
+    state: directory
+    owner: adsnative
+    group: adsnative
+
+- name: Check Configuration Directory
+  file:
+    path: /etc/supervisor/conf.d
+    state: directory
+    owner: adsnative
+    group: adsnative
+  become: yes
+
+

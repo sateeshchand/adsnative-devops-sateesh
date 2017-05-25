@@ -1,0 +1,10 @@
+---
+
+- name: restart adsnative app
+  supervisorctl: name=adsnative-app state=restarted
+  become_user: adsnative
+
+- name: reload supervisor config
+  command: supervisorctl reload && supervisorctl update
+  become_user: adsnative
+

@@ -1,0 +1,43 @@
+---
+
+- name: install git
+  apt:
+    name: git
+    state: present
+    force: yes
+  become: yes
+
+
+- name: install python-pip
+  apt:
+    name: python-pip
+    state: present
+    force: yes
+  become: yes
+
+- name: install update
+  shell: apt-get update
+  become: yes
+
+- name: install libapache2-mod-wsgi
+  apt:
+    name: libapache2-mod-wsgi
+    state: present
+    force: yes
+  become: yes
+
+- name: install python-dev
+  apt:
+    name: python-dev
+    state: present
+  become: yes
+
+- name: install enable wsgi
+  shell: a2enmod wsgi
+  become: yes
+
+- name: install redis
+  pip:
+    name: redis
+    state: present
+  become: yes

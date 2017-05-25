@@ -1,0 +1,39 @@
+---
+
+- name: Create Group
+  group: name=adsnative
+  become: yes
+
+
+- name: Create users
+  user: name=adsnative password=password group=adsnative groups=vagrant append=yes
+  become: yes
+
+- name: Create ssh directory
+  file:
+    path: /home/adsnative/.ssh
+    state: directory
+    mode: 0777
+    owner: adsnative
+    group: adsnative
+  become: yes
+
+
+- name: Add SSH public key file
+  copy:
+    src: files/adsnative.pub
+    dest: /home/adsnative/.ssh/id_rsa_git.pub
+    mode: 0644
+    owner: adsnative
+    group: adsnative
+  become: yes
+
+- name: Add SSH private key file
+  copy:
+    src: files/adsnative
+    dest: /home/adsnative/.ssh/id_rsa_git
+    mode: 0600
+    owner: adsnative
+    group: adsnative
+  become: yes
+

@@ -1,0 +1,11 @@
+{{ log_dir }}/*.log  {
+ hourly
+ maxsize 1
+ rotate 6
+ missingok
+ notifempty
+ compress
+ nocreate
+ copytruncate
+ su adsnative adsnative
+}

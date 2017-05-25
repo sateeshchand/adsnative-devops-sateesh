@@ -1,0 +1,58 @@
+---
+
+- name: Setup Service Directories
+  file: >
+    state=directory
+    path="{{ item }}"
+    mode=755
+  with_items:
+    - "{{ app.conf_dir }}"
+    - "{{ log_dir }}"
+
+- name: Install flask
+  pip: name=flask
+
+- name: Clone app
+  git:
+    repo: "{{ git_repo }}"
+    dest: "{{ app.install_dir }}"
+    accept_hostkey: yes
+    key_file: /home/adsnative/.ssh/id_rsa_git
+    force: yes
+
+- name: Change ownership of repo
+  file:
+    path: "{{ app.install_dir }}"
+    owner: adsnative
+    group: adsnative
+    mode: u+rwx
+    recurse: yes
+    force: yes
+
+- name: Forward port 1025 to port 80
+  iptables:
+    table: nat
+    chain: PREROUTING
+    in_interface: eth1
+    protocol: tcp
+    match: tcp
+    destination_port: 80
+    jump: REDIRECT
+    to_ports: 1025
+    comment: "For Flask app"
+
+- name: Install supervisor configuration
+  copy:
+    src: files/app_supervisor.conf
+    dest: /etc/supervisor/conf.d/adsnative_app.conf
+    owner: adsnative
+    group: adsnative
+
+- name: start supervisor service
+  shell: supervisord -c /etc/supervisord.conf -u adsnative
+  become_user: adsnative
+
+- name: reload supervisor config
+  command: supervisorctl reload && supervisorctl update
+  become_user: adsnative
+
